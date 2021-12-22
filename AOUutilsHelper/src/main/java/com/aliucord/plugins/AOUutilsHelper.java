@@ -60,7 +60,6 @@ public class AOUutilsHelper extends Plugin {
             var icon = ContextCompat.getDrawable(ctx, R.e.ic_ban_red_24dp);
             if (icon != null) {
                 icon = icon.mutate();
-                //icon.setTint(ColorCompat.getThemedColor(ctx, R.b.colorInteractiveNormal));
                 view.setCompoundDrawablesRelativeWithIntrinsicBounds(icon, null, null, null);
             }
             view.setOnClickListener(view1 -> {
