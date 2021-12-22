@@ -1,12 +1,25 @@
 package com.aliucord.plugins;
 
+import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
+
+import com.aliucord.Utils;
 import com.aliucord.annotations.AliucordPlugin;
 import com.aliucord.api.CommandsAPI;
+import com.aliucord.api.SettingsAPI;
 import com.aliucord.entities.Plugin;
-import com.aliucord.Utils;
+import com.aliucord.patcher.Hook;
 import com.discord.api.commands.ApplicationCommandType;
+import com.discord.widgets.chat.list.actions.WidgetChatListActions;
+import com.lytefast.flexinput.R;
 
 import java.util.Arrays;
 
@@ -14,12 +27,66 @@ import java.util.Arrays;
 @SuppressWarnings("unused")
 @AliucordPlugin
 public class AOUutilsHelper extends Plugin {
+    public static SettingsAPI pluginsettings;
+    private final int viewID = View.generateViewId();
+
+    public AOUutilsHelper() {
+        settingsTab = new SettingsTab(Settings.class, SettingsTab.Type.BOTTOM_SHEET).withArgs(settings);
+    }
+
     @Override
     // Called when your plugin is started. This is the place to register command, add patches, etc
     public void start(Context context) {
+        pluginsettings = settings;
+        patchContext();
+        registerCommands();
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void patchContext() {
+
+        patcher.patch(WidgetChatListActions.class, "configureUI", new Class<?>[]{WidgetChatListActions.Model.class}, new Hook(methodHookParam -> {
+            var _this = (WidgetChatListActions) methodHookParam.thisObject;
+            var ogView = (NestedScrollView) _this.requireView();
+            var layout = (LinearLayout) ogView.getChildAt(0);
+            if (layout == null || layout.findViewById(viewID) != null) return;
+            var ctx = layout.getContext();
+            var msg = ((WidgetChatListActions.Model) methodHookParam.args[0]).getMessage();
+            var userID = msg.component4().i();
+            var guildID = ((WidgetChatListActions.Model) methodHookParam.args[0]).getGuild().getId();
+            var view = new TextView(ctx, null, 0, R.i.UiKit_Settings_Item_Icon);
+            view.setId(viewID);
+            view.setText("Softban user");
+            var icon = ContextCompat.getDrawable(ctx, R.e.ic_ban_red_24dp);
+            if (icon != null) {
+                icon = icon.mutate();
+                //icon.setTint(ColorCompat.getThemedColor(ctx, R.b.colorInteractiveNormal));
+                view.setCompoundDrawablesRelativeWithIntrinsicBounds(icon, null, null, null);
+            }
+            view.setOnClickListener(view1 -> {
+                ClipboardManager clipboard = (ClipboardManager) ctx.getSystemService(Context.CLIPBOARD_SERVICE);
+                clipboard.setPrimaryClip(
+                        ClipData.newPlainText(
+                                "Copied Softban Command",
+                                String.format(
+                                        "%ssoftban %s Nitro/Steam Scam; Your account may be hacked, please change your password. " +
+                                                "You may rejoin at <https://discord.gg/S8waxK7QXd> after securing your account.",
+                                        pluginsettings.getString("prefix", "aou "),
+                                        userID
+                                )
+                        )
+                );
+                _this.dismiss();
+            });
+            if (userID != ((WidgetChatListActions.Model) methodHookParam.args[0]).getMe().getId() && guildID == Long.parseLong("794950428756410429"))
+                layout.addView(view, 1);
+        }));
+    }
+
+    private void registerCommands() {
         var options = Arrays.asList(
                 Utils.createCommandOption(ApplicationCommandType.STRING, "User ID", "The ID of the user to be softbanned.", null, true),
-                Utils.createCommandOption(ApplicationCommandType.STRING, "Prefix", "The prefix that you use with the bot. Required if you use something other than the default.", null, false)
+                Utils.createCommandOption(ApplicationCommandType.STRING, "Prefix", "The prefix that you use with the bot. Use this if AOUutils is temporarily offline.", null, false)
         );
 
         commands.registerCommand(
@@ -37,6 +104,8 @@ public class AOUutilsHelper extends Plugin {
                         } catch (Exception e) {
                             return new CommandsAPI.CommandResult("Invalid ID", null, false);
                         }
+                        if (prefix.equals("aou "))
+                            prefix = pluginsettings.getString("prefix", "aou ");
                         return new CommandsAPI.CommandResult(String.format("%ssoftban %s Nitro/Steam Scam; Your account may be hacked, please change your password. You may rejoin at <https://discord.gg/S8waxK7QXd> after securing your account.", prefix, id), null, true);
                     } else {
                         return new CommandsAPI.CommandResult("Invalid ID. A user ID is of 18 characters!", null, false);
@@ -48,7 +117,7 @@ public class AOUutilsHelper extends Plugin {
     @Override
     // Called when your plugin is stopped
     public void stop(Context context) {
-        // Unregisters all commands
+        patcher.unpatchAll();
         commands.unregisterAll();
     }
 }

@@ -8,7 +8,7 @@ buildscript {
         maven("https://jitpack.io")
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.0.2")
+        classpath("com.android.tools.build:gradle:7.0.4")
         classpath("com.github.Aliucord:gradle:main-SNAPSHOT")
     }
 }
@@ -30,7 +30,7 @@ subprojects {
     apply(plugin = "com.aliucord.gradle")
 
     aliucord {
-        author("DISCORD USERNAME", 123456789L)
+        author("Robin.", 535059139999825922)
         updateUrl.set("https://raw.githubusercontent.com/USERNAME/REPONAME/builds/updater.json")
         buildUrl.set("https://raw.githubusercontent.com/USERNAME/REPONAME/builds/%s.zip")
     }
@@ -56,9 +56,9 @@ subprojects {
         discord("com.discord:discord:aliucord-SNAPSHOT")
         implementation("com.github.Aliucord:Aliucord:main-SNAPSHOT")
 
-        implementation("androidx.appcompat:appcompat:1.3.1")
+        implementation("androidx.appcompat:appcompat:1.4.0")
         implementation("com.google.android.material:material:1.4.0")
-        implementation("androidx.constraintlayout:constraintlayout:2.1.0")
+        implementation("androidx.constraintlayout:constraintlayout:2.1.2")
     }
 }
 

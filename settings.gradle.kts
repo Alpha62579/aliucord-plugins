@@ -1,4 +1,4 @@
-// include(":MyFirstPlugin")
+include(":AOUutilsHelper")
 
 include(":CatApi")
 project(":CatApi").projectDir = File("./ExamplePlugins/CatApi")
