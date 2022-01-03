@@ -27,5 +27,6 @@ public class Settings extends BottomSheet {
         var cs = Utils.createCheckedSetting(ctx, CheckedSetting.ViewType.SWITCH, title, subtitle);
         cs.setChecked(settings.getBool(setting, false));
         cs.setOnCheckedListener(checked -> settings.setBool(setting, checked));
+        addView(cs);
     }
 }

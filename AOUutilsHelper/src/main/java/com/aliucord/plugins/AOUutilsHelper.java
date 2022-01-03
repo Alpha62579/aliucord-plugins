@@ -1,10 +1,9 @@
 package com.aliucord.plugins;
 
 import android.annotation.SuppressLint;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,8 +17,12 @@ import com.aliucord.api.SettingsAPI;
 import com.aliucord.entities.Plugin;
 import com.aliucord.patcher.Hook;
 import com.discord.api.commands.ApplicationCommandType;
+import com.discord.widgets.chat.input.AppFlexInputViewModel;
 import com.discord.widgets.chat.list.actions.WidgetChatListActions;
 import com.lytefast.flexinput.R;
+import c.b.a.e.a;
+import com.lytefast.flexinput.fragment.FlexInputFragment$c;
+import com.lytefast.flexinput.widget.FlexEditText;
 
 import java.util.Arrays;
 
@@ -28,6 +31,8 @@ import java.util.Arrays;
 @AliucordPlugin
 public class AOUutilsHelper extends Plugin {
     public static SettingsAPI pluginsettings;
+    private static FlexEditText textInput;
+    private static AppFlexInputViewModel textBox;
     private final int viewID = View.generateViewId();
 
     public AOUutilsHelper() {
@@ -44,42 +49,49 @@ public class AOUutilsHelper extends Plugin {
 
     @SuppressLint("SetTextI18n")
     private void patchContext() {
+        try {
+            patcher.patch(FlexEditText.class.getDeclaredMethod("onCreateInputConnection", EditorInfo.class), new Hook(methodHookParam -> {
+                textInput = (FlexEditText) methodHookParam.thisObject;
+            }));
 
-        patcher.patch(WidgetChatListActions.class, "configureUI", new Class<?>[]{WidgetChatListActions.Model.class}, new Hook(methodHookParam -> {
-            var _this = (WidgetChatListActions) methodHookParam.thisObject;
-            var ogView = (NestedScrollView) _this.requireView();
-            var layout = (LinearLayout) ogView.getChildAt(0);
-            if (layout == null || layout.findViewById(viewID) != null) return;
-            var ctx = layout.getContext();
-            var msg = ((WidgetChatListActions.Model) methodHookParam.args[0]).getMessage();
-            var userID = msg.component4().i();
-            var guildID = ((WidgetChatListActions.Model) methodHookParam.args[0]).getGuild().getId();
-            var view = new TextView(ctx, null, 0, R.i.UiKit_Settings_Item_Icon);
-            view.setId(viewID);
-            view.setText("Softban user");
-            var icon = ContextCompat.getDrawable(ctx, R.e.ic_ban_red_24dp);
-            if (icon != null) {
-                icon = icon.mutate();
-                view.setCompoundDrawablesRelativeWithIntrinsicBounds(icon, null, null, null);
-            }
-            view.setOnClickListener(view1 -> {
-                ClipboardManager clipboard = (ClipboardManager) ctx.getSystemService(Context.CLIPBOARD_SERVICE);
-                clipboard.setPrimaryClip(
-                        ClipData.newPlainText(
-                                "Copied Softban Command",
-                                String.format(
-                                        "%ssoftban %s Nitro/Steam Scam; Your account may be hacked, please change your password. " +
-                                                "You may rejoin at <https://discord.gg/S8waxK7QXd> after securing your account.",
-                                        pluginsettings.getString("prefix", "aou "),
-                                        userID
-                                )
-                        )
-                );
-                _this.dismiss();
-            });
-            if (userID != ((WidgetChatListActions.Model) methodHookParam.args[0]).getMe().getId() && guildID == Long.parseLong("794950428756410429"))
-                layout.addView(view, 1);
-        }));
+            patcher.patch(FlexInputFragment$c.class.getDeclaredMethod("invoke", Object.class), new Hook(methodHookParam -> {
+                textInput = ((a) methodHookParam.getResult()).getRoot().findViewById(R.f.text_input);
+            }));
+
+            patcher.patch(WidgetChatListActions.class, "configureUI", new Class<?>[]{WidgetChatListActions.Model.class}, new Hook(methodHookParam -> {
+                var _this = (WidgetChatListActions) methodHookParam.thisObject;
+                var ogView = (NestedScrollView) _this.requireView();
+                var layout = (LinearLayout) ogView.getChildAt(0);
+                if (layout == null || layout.findViewById(viewID) != null) return;
+                var ctx = layout.getContext();
+                var msg = ((WidgetChatListActions.Model) methodHookParam.args[0]).getMessage();
+                var userID = msg.component4().i();
+                var guildID = ((WidgetChatListActions.Model) methodHookParam.args[0]).getGuild().getId();
+                var view = new TextView(ctx, null, 0, R.i.UiKit_Settings_Item_Icon);
+                view.setId(viewID);
+                view.setText("Softban user");
+                var icon = ContextCompat.getDrawable(ctx, R.e.ic_ban_red_24dp);
+                if (icon != null) {
+                    icon = icon.mutate();
+                    view.setCompoundDrawablesRelativeWithIntrinsicBounds(icon, null, null, null);
+                }
+                view.setOnClickListener(view1 -> {
+                    _this.dismiss();
+                    textInput.setText(String.format(
+                            "%ssoftban %s Nitro/Steam Scam; Your account may be hacked, please change your password. " +
+                                    "You may rejoin at <https://discord.gg/S8waxK7QXd> after securing your account.",
+                            pluginsettings.getString("prefix", "aou "),
+                            userID
+                    ));
+                    textInput.setSelection(textInput.getSelectionEnd());
+                });
+                if (userID != ((WidgetChatListActions.Model) methodHookParam.args[0]).getMe().getId() && guildID == Long.parseLong("794950428756410429"))
+                    layout.addView(view, 1);
+            }));
+        }
+        catch (Exception e){
+            logger.error("Patching failed!", e);
+        }
     }
 
     private void registerCommands() {
