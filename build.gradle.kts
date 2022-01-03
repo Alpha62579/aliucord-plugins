@@ -6,6 +6,7 @@ buildscript {
         google()
         mavenCentral()
         maven("https://jitpack.io")
+        maven("https://maven.aliucord.com/snapshots")
     }
     dependencies {
         classpath("com.android.tools.build:gradle:7.0.4")
@@ -18,6 +19,7 @@ allprojects {
         google()
         mavenCentral()
         maven("https://jitpack.io")
+        maven("https://maven.aliucord.com/snapshots")
     }
 }
 
@@ -31,8 +33,8 @@ subprojects {
 
     aliucord {
         author("Robin.", 535059139999825922)
-        updateUrl.set("https://raw.githubusercontent.com/USERNAME/REPONAME/builds/updater.json")
-        buildUrl.set("https://raw.githubusercontent.com/USERNAME/REPONAME/builds/%s.zip")
+        updateUrl.set("https://raw.githubusercontent.com/Alpha62579/aliucord-plugins/builds/updater.json")
+        buildUrl.set("https://raw.githubusercontent.com/Alpha62579/aliucord-plugins/builds/%s.zip")
     }
 
     android {
@@ -54,7 +56,7 @@ subprojects {
         val implementation by configurations
 
         discord("com.discord:discord:aliucord-SNAPSHOT")
-        implementation("com.github.Aliucord:Aliucord:main-SNAPSHOT")
+        implementation("com.aliucord:Aliucord:main-SNAPSHOT")
 
         implementation("androidx.appcompat:appcompat:1.4.0")
         implementation("com.google.android.material:material:1.4.0")

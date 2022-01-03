@@ -1,6 +1,8 @@
 include(":AOUutilsHelper")
+//include(":ScamListener")
+include(":Rawify")
 
-/*include(":CatApi")
+include(":CatApi")
 project(":CatApi").projectDir = File("./ExamplePlugins/CatApi")
 
 include(":HelloWorld")
@@ -10,6 +12,6 @@ include(":HelloWorldAdvanced")
 project(":HelloWorldAdvanced").projectDir = File("./ExamplePlugins/HelloWorldAdvanced")
 
 include(":MyFirstPatch")
-project(":MyFirstPatch").projectDir = File("./ExamplePlugins/MyFirstPatch")*/
+project(":MyFirstPatch").projectDir = File("./ExamplePlugins/MyFirstPatch")
 
 rootProject.name = "AliucordPlugins"
