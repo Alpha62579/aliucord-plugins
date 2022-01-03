@@ -17,14 +17,18 @@ import com.aliucord.api.SettingsAPI;
 import com.aliucord.entities.Plugin;
 import com.aliucord.patcher.Hook;
 import com.discord.api.commands.ApplicationCommandType;
+import com.discord.api.permission.Permission;
+import com.discord.stores.StoreStream;
+import com.discord.utilities.permissions.PermissionUtils;
 import com.discord.widgets.chat.input.AppFlexInputViewModel;
 import com.discord.widgets.chat.list.actions.WidgetChatListActions;
 import com.lytefast.flexinput.R;
-import c.b.a.e.a;
 import com.lytefast.flexinput.fragment.FlexInputFragment$c;
 import com.lytefast.flexinput.widget.FlexEditText;
 
 import java.util.Arrays;
+
+import c.b.a.e.a;
 
 // This class is never used so your IDE will likely complain. Let's make it shut up!
 @SuppressWarnings("unused")
@@ -65,8 +69,9 @@ public class AOUutilsHelper extends Plugin {
                 if (layout == null || layout.findViewById(viewID) != null) return;
                 var ctx = layout.getContext();
                 var msg = ((WidgetChatListActions.Model) methodHookParam.args[0]).getMessage();
+                var me = ((WidgetChatListActions.Model) methodHookParam.args[0]).getMe();
                 var userID = msg.component4().i();
-                var guildID = ((WidgetChatListActions.Model) methodHookParam.args[0]).getGuild().getId();
+                var guild = ((WidgetChatListActions.Model) methodHookParam.args[0]).getGuild();
                 var view = new TextView(ctx, null, 0, R.i.UiKit_Settings_Item_Icon);
                 view.setId(viewID);
                 view.setText("Softban user");
@@ -85,11 +90,22 @@ public class AOUutilsHelper extends Plugin {
                     ));
                     textInput.setSelection(textInput.getSelectionEnd());
                 });
-                if (userID != ((WidgetChatListActions.Model) methodHookParam.args[0]).getMe().getId() && guildID == Long.parseLong("794950428756410429"))
+                var hasPerms = false;
+                var roleList = StoreStream.getGuilds().getRoles().get(guild.getId());
+                var memberMe = StoreStream.getGuilds().getMember(guild.getId(), me.getId());
+                for (long roleID : memberMe.getRoles()) {
+                    var role = roleList.get(roleID);
+                    if (role == null) return;
+                    var perms = role.h();
+                    if (PermissionUtils.can(Permission.BAN_MEMBERS, perms)) {
+                        hasPerms = true;
+                        break;
+                    }
+                }
+                if (userID != me.getId() && guild.getId() == Long.parseLong("794950428756410429") && hasPerms)
                     layout.addView(view, 1);
             }));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             logger.error("Patching failed!", e);
         }
     }
