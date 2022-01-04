@@ -18,6 +18,7 @@ import com.aliucord.entities.Plugin;
 import com.aliucord.patcher.Hook;
 import com.discord.api.commands.ApplicationCommandType;
 import com.discord.api.permission.Permission;
+import com.discord.api.role.GuildRole;
 import com.discord.stores.StoreStream;
 import com.discord.utilities.permissions.PermissionUtils;
 import com.discord.widgets.chat.input.AppFlexInputViewModel;
@@ -93,17 +94,28 @@ public class AOUutilsHelper extends Plugin {
                 var hasPerms = false;
                 var roleList = StoreStream.getGuilds().getRoles().get(guild.getId());
                 var memberMe = StoreStream.getGuilds().getMember(guild.getId(), me.getId());
+                var memberTarget = StoreStream.getGuilds().getMember(guild.getId(), msg.component4().i());
                 for (long roleID : memberMe.getRoles()) {
+                    assert roleList != null;
                     var role = roleList.get(roleID);
                     if (role == null) return;
                     var perms = role.h();
                     if (PermissionUtils.can(Permission.BAN_MEMBERS, perms)) {
                         hasPerms = true;
-                        break;
                     }
                 }
-                if (userID != me.getId() && guild.getId() == Long.parseLong("794950428756410429") && hasPerms)
-                    layout.addView(view, 1);
+                GuildRole highestRoleMe;
+                GuildRole highestRoleTarget;
+                assert roleList != null;
+                assert memberTarget.getRoles().size() != 0;
+                assert memberMe.getRoles().size() != 0;
+                highestRoleMe = roleList.get(memberMe.getRoles().get(memberMe.getRoles().size() - 1));
+                highestRoleTarget = roleList.get(memberTarget.getRoles().get(memberTarget.getRoles().size() - 1));
+                if (userID != me.getId() && guild.getId() == Long.parseLong("794950428756410429") && hasPerms) {
+                    assert highestRoleMe != null;
+                    assert highestRoleTarget != null;
+                    if (highestRoleMe.i() > highestRoleTarget.i()) layout.addView(view, 1);
+                }
             }));
         } catch (Exception e) {
             logger.error("Patching failed!", e);
