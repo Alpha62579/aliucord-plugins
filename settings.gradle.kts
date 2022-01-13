@@ -2,6 +2,8 @@ include(":AOUutilsHelper")
 //include(":ScamListener")
 include(":Rawify")
 
+include(":AutoThonk")
+
 //include(":CatApi")
 //project(":CatApi").projectDir = File("./ExamplePlugins/CatApi")
 
