@@ -1,17 +1,19 @@
-package com.aliucord.plugins;
+package com.alphapython.icheck;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.aliucord.Utils;
 import com.aliucord.api.SettingsAPI;
 import com.aliucord.utils.DimenUtils;
 import com.aliucord.views.TextInput;
 import com.aliucord.widgets.BottomSheet;
+import com.discord.views.CheckedSetting;
 
 import kotlin.jvm.functions.Function1;
 
@@ -25,10 +27,28 @@ public class Settings extends BottomSheet {
     @Override
     public void onViewCreated(View view, Bundle bundle) {
         super.onViewCreated(view, bundle);
-
         var ctx = requireContext();
-        addInput(ctx, "Your prefix for AOUutils.", "prefix", "aou ", false, input -> input != null && !input.equals(""));
+        addCheckedSetting(
+                ctx,
+                "I check",
+                "Checks if the message starts with I in an I channel before sending it.",
+                "checkI"
+        );
+        addInput(
+                ctx,
+                "I Channel ID",
+                "iChannel",
+                "911357751547023391",
+                false,
+                input -> input == null || input.equals("") || input.length() == 18
+        );
+    }
 
+    private void addCheckedSetting(Context ctx, String title, String subtitle, String setting) {
+        var cs = Utils.createCheckedSetting(ctx, CheckedSetting.ViewType.SWITCH, title, subtitle);
+        cs.setChecked(settings.getBool(setting, false));
+        cs.setOnCheckedListener(checked -> settings.setBool(setting, checked));
+        addView(cs);
     }
 
     private void addInput(Context ctx, String title, String setting, String def, boolean isInt, Function1<String, Boolean> validate) {

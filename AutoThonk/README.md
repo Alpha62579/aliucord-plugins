@@ -1,7 +1,5 @@
-# HelloWorldAdvanced
+# AutoThonk
 
-Extension of the HelloWorld plugin
+Checks if the message contains `:thonk:` and adds it if the message doesn't contain `:thonk:`
 
-This plugin adds a simple slash command /advancedhello that takes two optional arguments:
-- world -> Greet this world instead of simply saying Hello World
-- user -> Greet a user instead and send the result as actual message
+This plugin was made to be used in [Hyper Development](https://discord.gg/YhjySxSSJB) but you can configure this plugin to use it anywhere else.

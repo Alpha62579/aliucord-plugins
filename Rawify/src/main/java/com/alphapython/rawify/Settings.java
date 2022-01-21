@@ -1,4 +1,4 @@
-package com.aliucord.plugins;
+package com.alphapython.rawify;
 
 import android.content.Context;
 import android.os.Bundle;
