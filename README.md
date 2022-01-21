@@ -1,6 +1,6 @@
-# `Aliucord Plugins`
+# Aliucord Plugins
 
-Some Aliucord plugins that I wrote without learning Java in the first place.
+Some Aliucord plugins that I wrote without learning Java in the first place. Most of these aren't even for public use, but who really cares?
 
 ## Install
 
@@ -10,3 +10,7 @@ Some Aliucord plugins that I wrote without learning Java in the first place.
 ## License
 
 No you don't have any license to use this code because this is prolly bad code and you're better off learning from someone else. Seriously.
+
+## Credits
+
+This project contains code from Vendicated's repo at https://github.com/Vendicated/aliucord-plugins

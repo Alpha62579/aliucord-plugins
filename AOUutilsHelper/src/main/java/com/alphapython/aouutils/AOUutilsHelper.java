@@ -1,4 +1,4 @@
-package com.aliucord.plugins;
+package com.alphapython.aouutils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
