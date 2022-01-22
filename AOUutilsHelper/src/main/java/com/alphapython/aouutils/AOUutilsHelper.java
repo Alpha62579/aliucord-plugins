@@ -2,25 +2,34 @@ package com.alphapython.aouutils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.widget.NestedScrollView;
 
+import com.aliucord.Constants;
 import com.aliucord.Utils;
 import com.aliucord.annotations.AliucordPlugin;
 import com.aliucord.api.CommandsAPI;
 import com.aliucord.api.SettingsAPI;
 import com.aliucord.entities.Plugin;
+import com.aliucord.fragments.ConfirmDialog;
 import com.aliucord.patcher.Hook;
 import com.discord.api.commands.ApplicationCommandType;
+import com.discord.api.message.Message;
 import com.discord.api.permission.Permission;
 import com.discord.api.role.GuildRole;
+import com.discord.restapi.RestAPIParams;
 import com.discord.stores.StoreStream;
 import com.discord.utilities.permissions.PermissionUtils;
+import com.discord.utilities.rest.RestAPI;
+import com.discord.widgets.chat.MessageManager;
+import com.discord.widgets.user.profile.UserProfileAdminView;
 import com.discord.widgets.chat.input.AppFlexInputViewModel;
 import com.discord.widgets.chat.list.actions.WidgetChatListActions;
 import com.lytefast.flexinput.R;
@@ -50,6 +59,39 @@ public class AOUutilsHelper extends Plugin {
         pluginsettings = settings;
         patchContext();
         registerCommands();
+    }
+
+    private void patchAdminMenu() {
+        try {
+            patcher.patch(UserProfileAdminView.class, "configureUI", new Class<?>[]{UserProfileAdminView.class}, new Hook(methodHookParam -> {
+                var _this = (UserProfileAdminView) methodHookParam.thisObject;
+                var ctx = _this.getContext();
+
+                var view = new TextView(new ContextThemeWrapper(ctx, R.i.UiKit_Settings_Item));
+                view.setCompoundDrawablesRelativeWithIntrinsicBounds(ContextCompat.getDrawable(ctx, R.e.ic_ban_red_24dp), null, null, null);
+                view.setTextColor(ContextCompat.getColor(ctx, R.c.status_red_500));
+                view.setTypeface(ResourcesCompat.getFont(ctx, Constants.Fonts.ginto_regular));
+                view.setText("Softban");
+                view.setTag("softban_scam");
+                view.setCompoundDrawablePadding(32);
+                view.setOnClickListener(view1 -> {
+                    var dialog = new ConfirmDialog();
+                    dialog.setTitle("Haha you clicked this button.");
+                    dialog.setDescription("Well this button doesn't actually work.");
+                    dialog.setOnOkListener(view2 -> {
+                        logger.infoToast("You clicked Ok.");
+                    });
+                    dialog.setOnCancelListener(view2 -> {
+                        logger.infoToast("You clicked Cancel.");
+                    });
+                    dialog.show(Utils.appActivity.getSupportFragmentManager(), "joe_mama_dialog");
+                });
+
+                _this.addView(view);
+            }));
+        } catch (Exception e) {
+            logger.error("Failed to patch Admin menu", e);
+        }
     }
 
     @SuppressLint("SetTextI18n")
