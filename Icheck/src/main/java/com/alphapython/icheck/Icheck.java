@@ -12,6 +12,8 @@ import com.discord.widgets.chat.MessageContent;
 import com.discord.widgets.chat.MessageManager;
 import com.discord.widgets.chat.input.ChatInputViewModel;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import kotlin.jvm.functions.Function1;
@@ -21,6 +23,24 @@ import kotlin.jvm.functions.Function1;
 public class Icheck extends Plugin {
     public static SettingsAPI pluginSettings;
     public static Logger logger = new Logger("Icheck");
+    public static HashMap<String, ArrayList<String>> text = new HashMap<>() {{
+        put("i", new ArrayList<>() {{
+            add("911357751547023391");
+            add("I forgot to put an I, but ");
+        }});
+        put("a", new ArrayList<>() {{
+            add("929774476713938964");
+            add("And I forgot to an A, anyways ");
+        }});
+        put("b", new ArrayList<>() {{
+            add("934903182797176882");
+            add("bruh, I didn't add a b, anyways ");
+        }});
+        put("h", new ArrayList<>() {{
+            add("934547364797120614");
+            add("hi, I forgot to add a h, anyways ");
+        }});
+    }};
 
     public Icheck() {
         settingsTab = new SettingsTab(Settings.class, SettingsTab.Type.BOTTOM_SHEET).withArgs(settings);
@@ -38,18 +58,28 @@ public class Icheck extends Plugin {
             textField.setAccessible(true);
 
             patcher.patch(ChatInputViewModel.class.getDeclaredMethod("sendMessage", Context.class, MessageManager.class, MessageContent.class, List.class, boolean.class, Function1.class), new PreHook(methodHookParam -> {
-                if (!pluginSettings.getBool("checkI", false) || !pluginSettings.getString("iChannel", "911357751547023391").equals(String.valueOf(StoreStream.getChannelsSelected().getId())))
+                var channel = "";
+                for (String key :
+                        pluginSettings.getAllKeys()) {
+                    if (key.replace("Channel", "").length() == 1 && pluginSettings.getString(key, "Electrowo, why?").equals(String.valueOf(StoreStream.getChannelsSelected().getId())) && key.contains("Channel")) {
+                        channel = key.replace("Channel", "");
+                        break;
+                    }
+                }
+                if (channel.equals("") || !pluginSettings.getBool("check" + channel.toUpperCase(), false))
                     return;
                 var messageContent = (MessageContent) methodHookParam.args[2];
                 if (messageContent == null) return;
                 try {
                     var content = (String) textField.get(messageContent);
                     if (content == null) return;
-                    if (!content.toLowerCase().startsWith("i")) {
-                        textField.set(messageContent, "I forgot to add an I, but " + content);
+                    if (!content.toLowerCase().startsWith(channel)) {
+                        textField.set(messageContent, text.get(channel).get(1) + content);
                     }
                 } catch (IllegalAccessException e) {
                     logger.error("Unable to get content from textField. Icheck patch failed.", e);
+                } catch (NullPointerException e) {
+                    logger.error("Failed to get message from Array. This is odd...", e);
                 }
             }));
         } catch (NoSuchFieldException e) {

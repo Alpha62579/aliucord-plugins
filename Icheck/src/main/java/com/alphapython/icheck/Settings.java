@@ -28,20 +28,26 @@ public class Settings extends BottomSheet {
     public void onViewCreated(View view, Bundle bundle) {
         super.onViewCreated(view, bundle);
         var ctx = requireContext();
-        addCheckedSetting(
-                ctx,
-                "I check",
-                "Checks if the message starts with I in an I channel before sending it.",
-                "checkI"
-        );
-        addInput(
-                ctx,
-                "I Channel ID",
-                "iChannel",
-                "911357751547023391",
-                false,
-                input -> input == null || input.equals("") || input.length() == 18
-        );
+        Icheck.text.forEach((key, array) -> {
+            addCheckedSetting(
+                    ctx,
+                    key.toUpperCase() + " check",
+                    String.format(
+                            "Checks if the message starts with %s in %s %s channel before sending it.",
+                            key.toUpperCase(),
+                            key.matches("[aeiou]") ? "an" : "a",
+                            key.toUpperCase()),
+                    "check" + key.toUpperCase()
+            );
+            addInput(
+                    ctx,
+                    key.toUpperCase() + " Channel ID",
+                    key + "Channel",
+                    array.get(1),
+                    false,
+                    input -> input == null || input.equals("") || input.length() == 18
+            );
+        });
     }
 
     private void addCheckedSetting(Context ctx, String title, String subtitle, String setting) {
@@ -58,6 +64,13 @@ public class Settings extends BottomSheet {
         input.setLayoutParams(params);
         input.setHint(title);
         var editText = input.getEditText();
+        if (settings.getString(setting, "nope").equals("nope")) {
+            if (isInt) {
+                settings.setInt(setting, Integer.parseInt(def));
+            } else {
+                settings.setString(setting, def);
+            }
+        }
         editText.setText(isInt ? Integer.toString(settings.getInt(setting, Integer.parseInt(def))) : settings.getString(setting, def));
         editText.addTextChangedListener(new TextWatcher() {
             @Override
