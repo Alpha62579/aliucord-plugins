@@ -38,7 +38,7 @@ public class Icheck extends Plugin {
             textField.setAccessible(true);
 
             patcher.patch(ChatInputViewModel.class.getDeclaredMethod("sendMessage", Context.class, MessageManager.class, MessageContent.class, List.class, boolean.class, Function1.class), new PreHook(methodHookParam -> {
-                if (!pluginSettings.getBool("checkI", false) || !pluginSettings.getString("iChannel", "nani wrong channel!").equals(String.valueOf(StoreStream.getChannelsSelected().getId())))
+                if (!pluginSettings.getBool("checkI", false) || !pluginSettings.getString("iChannel", "911357751547023391").equals(String.valueOf(StoreStream.getChannelsSelected().getId())))
                     return;
                 var messageContent = (MessageContent) methodHookParam.args[2];
                 if (messageContent == null) return;
