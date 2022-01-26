@@ -15,6 +15,8 @@ import com.aliucord.views.TextInput;
 import com.aliucord.widgets.BottomSheet;
 import com.discord.views.CheckedSetting;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import kotlin.jvm.functions.Function1;
 
 public class Settings extends BottomSheet {
@@ -28,7 +30,9 @@ public class Settings extends BottomSheet {
     public void onViewCreated(View view, Bundle bundle) {
         super.onViewCreated(view, bundle);
         var ctx = requireContext();
+        AtomicInteger id = new AtomicInteger(1);
         Icheck.text.forEach((key, array) -> {
+            id.set(1);
             addCheckedSetting(
                     ctx,
                     key.toUpperCase() + " check",
@@ -39,6 +43,11 @@ public class Settings extends BottomSheet {
                             key.toUpperCase()),
                     "check" + key.toUpperCase()
             );
+            try {
+                Long.parseLong(array.get(id.get()));
+            } catch (NumberFormatException e) {
+                id.set(0);
+            }
             addInput(
                     ctx,
                     key.toUpperCase() + " Channel ID",
