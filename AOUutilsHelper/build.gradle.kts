@@ -7,7 +7,7 @@ aliucord.changelog.set(
         * Trigger update because I wanted to see the updater in action. :>
         # 1.0.2
         * Funny button. I didn't bother using adb because lazy
-        # 0.0.0
-        * Ah yes best update of the century
+        # 1.0.3
+        * Fixes: Update the plugin for Discord 112.4
         """.trimIndent()
 )

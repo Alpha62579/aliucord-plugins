@@ -21,24 +21,20 @@ import com.aliucord.entities.Plugin;
 import com.aliucord.fragments.ConfirmDialog;
 import com.aliucord.patcher.Hook;
 import com.discord.api.commands.ApplicationCommandType;
-import com.discord.api.message.Message;
 import com.discord.api.permission.Permission;
 import com.discord.api.role.GuildRole;
-import com.discord.restapi.RestAPIParams;
 import com.discord.stores.StoreStream;
 import com.discord.utilities.permissions.PermissionUtils;
-import com.discord.utilities.rest.RestAPI;
-import com.discord.widgets.chat.MessageManager;
-import com.discord.widgets.user.profile.UserProfileAdminView;
 import com.discord.widgets.chat.input.AppFlexInputViewModel;
 import com.discord.widgets.chat.list.actions.WidgetChatListActions;
+import com.discord.widgets.user.profile.UserProfileAdminView;
 import com.lytefast.flexinput.R;
 import com.lytefast.flexinput.fragment.FlexInputFragment$c;
 import com.lytefast.flexinput.widget.FlexEditText;
 
 import java.util.Arrays;
 
-import c.b.a.e.a;
+import b.b.a.e.a;
 
 // This class is never used so your IDE will likely complain. Let's make it shut up!
 @SuppressWarnings("unused")
@@ -58,6 +54,7 @@ public class AOUutilsHelper extends Plugin {
     public void start(Context context) {
         pluginsettings = settings;
         patchContext();
+        patchAdminMenu();
         registerCommands();
     }
 
