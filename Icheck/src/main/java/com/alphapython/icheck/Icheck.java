@@ -40,6 +40,10 @@ public class Icheck extends Plugin {
             add("934547364797120614");
             add("hi, I forgot to add a h, anyways ");
         }});
+        put("e", new ArrayList<>() {{
+            add("935759398310129684");
+            add("electro pog, anyways ");
+        }});
     }};
 
     public Icheck() {
