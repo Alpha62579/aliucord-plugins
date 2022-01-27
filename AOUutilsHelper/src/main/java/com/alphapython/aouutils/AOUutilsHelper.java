@@ -97,6 +97,8 @@ public class AOUutilsHelper extends Plugin {
                 if (wrapper.view == null) return;
                 if (!loaded.getGuildId().toString().equals("794950428756410429")) {
                     wrapper.view.setVisibility(View.INVISIBLE);
+                } else {
+                    wrapper.view.setVisibility(View.VISIBLE);
                 }
                 wrapper.view.setOnClickListener(view -> {
                     _this.dismiss();
