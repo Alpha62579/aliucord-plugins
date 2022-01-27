@@ -28,6 +28,17 @@ public class Settings extends BottomSheet {
 
         var ctx = requireContext();
         addInput(ctx, "Your prefix for AOUutils.", "prefix", "aou ", false, input -> input != null && !input.equals(""));
+        addInput(ctx, "Bot commands channel ID", "bot_cmds", "852899427860611144", false, input -> {
+            if (input != null && !input.equals("") && input.length() == 18) {
+                try {
+                    Long.parseLong(input);
+                    return true;
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            }
+            return false;
+        });
 
     }
 

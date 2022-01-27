@@ -54,7 +54,17 @@ public class Settings extends BottomSheet {
                     key + "Channel",
                     array.get(1),
                     false,
-                    input -> input == null || input.equals("") || input.length() == 18
+                    input -> {
+                        if (input.length() == 18) {
+                            try {
+                                Long.parseLong(input);
+                                return true;
+                            } catch (NumberFormatException e) {
+                                return false;
+                            }
+                        }
+                        return input == null || input.equals("");
+                    }
             );
         });
     }

@@ -1,4 +1,4 @@
-version = "1.0.3"
+version = "1.1.0"
 description = "This is a plugin to softban scammers.\nNote: This plugin is only intended for use with AOUutils and the All Of Us discord server."
 
 aliucord.changelog.set(
@@ -9,5 +9,7 @@ aliucord.changelog.set(
         * Funny button. I didn't bother using adb because lazy
         # 1.0.3
         * Fixes: Update the plugin for Discord 112.4
+        # 1.1.0
+        * Enhancement: Adds a softban button to user profile sheet.
         """.trimIndent()
 )

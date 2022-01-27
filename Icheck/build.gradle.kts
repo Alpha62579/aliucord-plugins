@@ -1,4 +1,4 @@
-version = "1.1.2"
+version = "1.1.3"
 description = "Checks if the message starts with I or whatever the channel and avert the crisis if it does not start with that letter."
 
 aliucord.changelog.set(
@@ -12,5 +12,7 @@ aliucord.changelog.set(
             * Enhancement: Added support for "e" channel.
             ## 1.1.2
             * Bug Fix.
+            ## 1.1.3
+            * More bug fixes. ~~OH GOD WHY ARE THERE SO MANY BUGS~~
         """.trimIndent()
 )
