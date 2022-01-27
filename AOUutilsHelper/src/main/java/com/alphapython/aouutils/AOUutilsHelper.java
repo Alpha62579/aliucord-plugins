@@ -73,7 +73,7 @@ public class AOUutilsHelper extends Plugin {
             var wrapper = new Object() {
                 TextView view = null;
             };
-            patcher.patch(UserProfileAdminView.class.getDeclaredMethod("updateView", UserProfileAdminView.ViewState.class), new PreHook(methodHookParam -> {
+            patcher.patch(UserProfileAdminView.class.getDeclaredMethod("updateView", UserProfileAdminView.ViewState.class), new Hook(methodHookParam -> {
                 var _this = (ViewGroup) methodHookParam.thisObject;
                 var ctx = _this.getContext();
                 var layout = (LinearLayout) _this.getChildAt(0);
