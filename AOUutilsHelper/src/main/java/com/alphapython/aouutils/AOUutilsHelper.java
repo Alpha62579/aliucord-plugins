@@ -136,7 +136,7 @@ public class AOUutilsHelper extends Plugin {
                                 onError -> logger.error("Softban failed...", onError)))).start();
                     });
                     dialog.setOnCancelListener(view1 -> dialog.dismiss());
-                    dialog.show(Utils.appActivity.getSupportFragmentManager(), "Softban");
+                    dialog.show(_this.getParentFragmentManager(), "Softban");
                 });
             }));
         } catch (Exception e) {
