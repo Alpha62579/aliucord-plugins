@@ -30,7 +30,7 @@ public class Icheck extends Plugin {
         }});
         put("a", new ArrayList<>() {{
             add("929774476713938964");
-            add("And I forgot to an A, anyways ");
+            add("accidentally forgot to start my message with an \"a\", but anyways ");
         }});
         put("b", new ArrayList<>() {{
             add("934903182797176882");
