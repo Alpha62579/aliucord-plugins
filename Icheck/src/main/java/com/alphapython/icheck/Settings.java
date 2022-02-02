@@ -52,7 +52,7 @@ public class Settings extends BottomSheet {
                     ctx,
                     key.toUpperCase() + " Channel ID",
                     key + "Channel",
-                    array.get(1),
+                    array.get(id.get()),
                     false,
                     input -> {
                         if (input.length() == 18) {
