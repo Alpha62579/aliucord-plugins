@@ -1,5 +1,5 @@
 
-version = "1.2.1"
+version = "1.3.0"
 
 
 
@@ -22,10 +22,10 @@ aliucord.changelog.set(
             * Updated the prefix message for the "a" channel.
             # 1.2.0
             * Added support for "s" channel.
-
             # 1.2.1
             * I forgot to apply the fix from v1.1.2
-
+            # 1.3.0
+            * Added support for "r" channel.
 
         """.trimIndent()
 )
