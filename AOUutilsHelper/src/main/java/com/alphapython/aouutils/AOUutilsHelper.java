@@ -106,13 +106,13 @@ public class AOUutilsHelper extends Plugin {
                     var guildId = loaded.getGuildId();
                     var dialog = new ConfirmDialog();
                     dialog.setTitle("Softban " + user.getUsername() + "?");
-                    dialog.setDescription("Do you want to softban " + user.getUsername() + " for Nitro/Steam scam?");
+                    dialog.setDescription("Do you want to softban " + user.getUsername() + " for scamming?");
                     dialog.setIsDangerous(true);
                     dialog.setOnOkListener(view1 -> {
                         dialog.dismiss();
                         var params = new RestAPIParams.Message(
                                 String.format(
-                                        "%ssoftban %s Nitro/Steam Scam; Your account may be hacked, please change your password. " +
+                                        "%ssoftban %s Scam; Your account may be hacked, please change your password. " +
                                                 "You may rejoin at <https://discord.gg/S8waxK7QXd> after securing your account.",
                                         pluginsettings.getString("prefix", "aou "),
                                         loaded.getUser().getId()
@@ -172,7 +172,7 @@ public class AOUutilsHelper extends Plugin {
                 view.setOnClickListener(view1 -> {
                     _this.dismiss();
                     textInput.setText(String.format(
-                            "%ssoftban %s Nitro/Steam Scam; Your account may be hacked, please change your password. " +
+                            "%ssoftban %s Scam; Your account may be hacked, please change your password. " +
                                     "You may rejoin at <https://discord.gg/S8waxK7QXd> after securing your account.",
                             pluginsettings.getString("prefix", "aou "),
                             userID
@@ -218,7 +218,7 @@ public class AOUutilsHelper extends Plugin {
 
         commands.registerCommand(
                 "scam",
-                "Softban a user due to a nitro scam.",
+                "Softban a user due to a scam.",
                 options,
                 ctx -> {
                     // get argument passed to the world option or fall back to Earth if not specified
@@ -233,7 +233,7 @@ public class AOUutilsHelper extends Plugin {
                         }
                         if (prefix.equals("aou "))
                             prefix = pluginsettings.getString("prefix", "aou ");
-                        return new CommandsAPI.CommandResult(String.format("%ssoftban %s Nitro/Steam Scam; Your account may be hacked, please change your password. You may rejoin at <https://discord.gg/S8waxK7QXd> after securing your account.", prefix, id), null, true);
+                        return new CommandsAPI.CommandResult(String.format("%ssoftban %s Scam; Your account may be hacked, please change your password. You may rejoin at <https://discord.gg/S8waxK7QXd> after securing your account.", prefix, id), null, true);
                     } else {
                         return new CommandsAPI.CommandResult("Invalid ID. A user ID is of 18 characters!", null, false);
                     }
