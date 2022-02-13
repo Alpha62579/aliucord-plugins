@@ -48,6 +48,10 @@ public class Icheck extends Plugin {
             add("938515745325850674");
             add("sucks to me be because i forgot the 's', anyways ");
         }});
+       put("r", new ArrayList<>() {{
+            add("942503083886411827");
+            add("r/therewasanattempttosendamessagethatdidnotstartwithr, anyways ");
+        }});
     }};
 
     public Icheck() {
