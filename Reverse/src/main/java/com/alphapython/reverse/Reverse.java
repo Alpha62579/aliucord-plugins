@@ -72,7 +72,7 @@ public class Reverse extends Plugin {
             patcher.patch(ChatInputViewModel.class.getDeclaredMethod("sendMessage", Context.class, MessageManager.class, MessageContent.class, List.class, boolean.class, Function1.class), new PreHook(methodHookParam -> {
                 if (!pluginSettings.getBool("reverse", false)) return;
 
-                var messageContent = (MessageContent) methodHookParam.args[0];
+                var messageContent = (MessageContent) methodHookParam.args[2];
                 if (messageContent == null) return;
 
                 try {
