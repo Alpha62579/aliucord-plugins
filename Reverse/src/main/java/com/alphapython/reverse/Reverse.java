@@ -37,7 +37,7 @@ public class Reverse extends Plugin {
 
     private void registerCommands() {
         var options = Collections.singletonList(
-                Utils.createCommandOption(ApplicationCommandType.STRING, "Message", "The message whose markdown needs to be escaped.", null, true)
+                Utils.createCommandOption(ApplicationCommandType.STRING, "text", "The message whose markdown needs to be escaped.", null, true)
         );
         commands.registerCommand(
                 "reverse",
