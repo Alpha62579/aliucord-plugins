@@ -46,7 +46,7 @@ public class Reverse extends Plugin {
                 ctx -> {
                     String toReverse = ctx.getStringOrDefault("text", "");
                     if (toReverse.equals("")) {
-                        return new CommandsAPI.CommandResult("The message is empty!");
+                        return new CommandsAPI.CommandResult("The message is empty!", null, false);
                     }
                     return new CommandsAPI.CommandResult(reverse(toReverse), null, true);
                 }
@@ -57,9 +57,9 @@ public class Reverse extends Plugin {
                 "Toggles whether all the sent messages must be escaped or not",
                 ctx -> {
                     if (pluginSettings.toggleBool("reverse", false)) {
-                        return new CommandsAPI.CommandResult("All the messages that are sent from now on will be reversed.");
+                        return new CommandsAPI.CommandResult("All the messages that are sent from now on will be reversed.", null, false);
                     }
-                    return new CommandsAPI.CommandResult("All the messages that are sent from now on will not be reversed.");
+                    return new CommandsAPI.CommandResult("All the messages that are sent from now on will not be reversed.", null, false);
                 }
         );
     }
@@ -93,6 +93,7 @@ public class Reverse extends Plugin {
 
     @Override
     public void start(Context context) {
+        pluginSettings = settings;
         registerCommands();
         patchSendMessage();
         logger.info("All commands have been registered and patches have been applied.");
