@@ -159,7 +159,7 @@ public class AOUutilsHelper extends Plugin {
                 var ctx = layout.getContext();
                 var msg = ((WidgetChatListActions.Model) methodHookParam.args[0]).getMessage();
                 var me = ((WidgetChatListActions.Model) methodHookParam.args[0]).getMe();
-                var userID = msg.component4().i();
+                var userID = msg.component4().getId();
                 var guild = ((WidgetChatListActions.Model) methodHookParam.args[0]).getGuild();
                 var view = new TextView(ctx, null, 0, R.i.UiKit_Settings_Item_Icon);
                 view.setId(viewID);
@@ -182,7 +182,7 @@ public class AOUutilsHelper extends Plugin {
                 var hasPerms = false;
                 var roleList = StoreStream.getGuilds().getRoles().get(guild.getId());
                 var memberMe = StoreStream.getGuilds().getMember(guild.getId(), me.getId());
-                var memberTarget = StoreStream.getGuilds().getMember(guild.getId(), msg.component4().i());
+                var memberTarget = StoreStream.getGuilds().getMember(guild.getId(), msg.component4().getId());
                 for (long roleID : memberMe.getRoles()) {
                     assert roleList != null;
                     var role = roleList.get(roleID);

@@ -1,4 +1,4 @@
-version = "1.2.0"
+version = "1.2.1"
 description = "This is a plugin to softban scammers.\nNote: This plugin is only intended for use with AOUutils and the All Of Us discord server."
 
 aliucord.changelog.set(
@@ -17,5 +17,7 @@ aliucord.changelog.set(
         * Bug Fix: Probable fix for the bug where the ConfirmDialog doesn't work.
         # 1.2.0
         * Changes: Modified softban reason.
+        # 1.2.1
+        * Bug fix: Fixes due to new Discord update.
         """.trimIndent()
 )
