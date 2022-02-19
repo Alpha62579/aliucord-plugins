@@ -3,6 +3,7 @@ package com.alphapython.robdaplugins;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.aliucord.Constants;
 import com.aliucord.Http;
@@ -34,20 +35,43 @@ public class Downloader extends SettingsPage {
 
         var thread = new Thread(() -> {
             try {
-                plugins = Http.simpleJsonGet("https://raw.githubusercontent.com/Alpha62579/aliucord-plugins/builds/updater.json", TypeToken.getParameterized(Map.class, String.class, Object.class).getType());
+                plugins = Http.simpleJsonGet(
+                        "https://raw.githubusercontent.com/Alpha62579/aliucord-plugins/builds/updater.json",
+                        TypeToken.getParameterized(Map.class, String.class, Object.class).getType()
+                );
             } catch (IOException e) {
                 Utils.showToast("Failed to get updater json...");
             }
         });
-
         thread.start();
-        while (thread.isAlive()) {
-            thread.getId();
-        }
+        // Random function to keep this occupied
+        // Otherwise plugins would become null
+        while (thread.isAlive()) thread.getId();
+
 
         plugins.forEach((name, info) ->
                 DealWithMap(ctx, name, info, this::reRender)  // Android Studio was yelling at me that I couldn't just put code here so I made a function.
         );
+
+        var layout = new LinearLayout(ctx);
+        layout.setPadding(0, 100, 0, 0);
+
+        var button = new Button(ctx);
+        button.setText("Repository");
+        button.setOnClickListener(onClick -> Utils.launchUrl("https://github.com/Alpha62579/aliucord-plugins/"));
+        var params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.weight = 1f;
+        params.setMarginEnd(15);
+        button.setLayoutParams(params);
+        layout.addView(button);
+
+        button = new Button(ctx);
+        button.setText("GitHub");
+        button.setOnClickListener(onClick -> Utils.launchUrl("https://github.com/Alpha62579/"));
+        button.setLayoutParams(params);
+        layout.addView(button);
+
+        addView(layout);
     }
 
     public void DealWithMap(Context ctx, String name, Object info, Runnable callback) {

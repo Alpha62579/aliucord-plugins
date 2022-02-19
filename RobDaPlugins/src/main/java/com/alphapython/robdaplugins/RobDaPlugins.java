@@ -15,6 +15,7 @@ public class RobDaPlugins extends Plugin {
         settingsTab = new SettingsTab(Downloader.class, SettingsTab.Type.PAGE);
     }
 
+    // Dummy plugin, I just need the Settings button.
     @Override
     public void start(Context context) {
     }
