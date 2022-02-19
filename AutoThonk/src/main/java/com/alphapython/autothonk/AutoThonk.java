@@ -45,7 +45,7 @@ public class AutoThonk extends Plugin {
                 try {
                     var content = (String) textField.get(messageContent);
                     if (content == null) return;
-                    if (!content.contains(":thonk:") && !content.contains("\\:thonk\\:"))
+                    if (!content.replace("\\", "").contains(":thonk:"))
                         content = "\\:thonk\\: " + content;
                     textField.set(messageContent, content);
                 } catch (IllegalAccessException e) {
