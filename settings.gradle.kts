@@ -10,4 +10,6 @@ include(":Reverse")
 
 include(":RobDaPlugins")
 
+include(":Enchanter")
+
 rootProject.name = "AliucordPlugins"
