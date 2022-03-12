@@ -113,7 +113,7 @@ public class AOUutilsHelper extends Plugin {
                         var params = new RestAPIParams.Message(
                                 String.format(
                                         "%ssoftban %s Scam; Your account may be hacked, please change your password. " +
-                                                "You may rejoin at <https://discord.gg/S8waxK7QXd> after securing your account.",
+                                                "You may rejoin at <https://discord.gg/MCfSX48Wtd> after securing your account.",
                                         pluginsettings.getString("prefix", "aou "),
                                         loaded.getUser().getId()
                                 ),
@@ -173,7 +173,7 @@ public class AOUutilsHelper extends Plugin {
                     _this.dismiss();
                     textInput.setText(String.format(
                             "%ssoftban %s Scam; Your account may be hacked, please change your password. " +
-                                    "You may rejoin at <https://discord.gg/S8waxK7QXd> after securing your account.",
+                                    "You may rejoin at <https://discord.gg/MCfSX48Wtd> after securing your account.",
                             pluginsettings.getString("prefix", "aou "),
                             userID
                     ));
@@ -233,7 +233,7 @@ public class AOUutilsHelper extends Plugin {
                         }
                         if (prefix.equals("aou "))
                             prefix = pluginsettings.getString("prefix", "aou ");
-                        return new CommandsAPI.CommandResult(String.format("%ssoftban %s Scam; Your account may be hacked, please change your password. You may rejoin at <https://discord.gg/S8waxK7QXd> after securing your account.", prefix, id), null, true);
+                        return new CommandsAPI.CommandResult(String.format("%ssoftban %s Scam; Your account may be hacked, please change your password. You may rejoin at <https://discord.gg/MCfSX48Wtd> after securing your account.", prefix, id), null, true);
                     } else {
                         return new CommandsAPI.CommandResult("Invalid ID. A user ID is of 18 characters!", null, false);
                     }
