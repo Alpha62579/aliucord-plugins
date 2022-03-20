@@ -12,4 +12,6 @@ include(":RobDaPlugins")
 
 include(":Enchanter")
 
+include(":MassModeration")
+
 rootProject.name = "AliucordPlugins"
