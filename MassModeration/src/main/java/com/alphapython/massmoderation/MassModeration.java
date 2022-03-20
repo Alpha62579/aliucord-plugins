@@ -32,25 +32,24 @@ public class MassModeration extends Plugin {
                     String query = ctx.getStringOrDefault("Query", "");
 
                     if (query.equals(""))
-                        return new CommandsAPI.CommandResult("No query provided...", null, true);
+                        return new CommandsAPI.CommandResult("No query provided...", null, false);
 
                     // Permission check
                     var roleList = StoreStream.getGuilds().getRoles().get(ctx.getCurrentChannel().getGuildId());
                     var memberMe = StoreStream.getGuilds().getMember(ctx.getCurrentChannel().getGuildId(), ctx.getMe().getId());
                     for (long roleID : memberMe.getRoles()) {
                         if (roleList == null)
-                            return new CommandsAPI.CommandResult("An error has occurred. You may be using this command in DM or a Group DM.");
+                            return new CommandsAPI.CommandResult("An error has occurred. You may be using this command in DM or a Group DM.", null, false);
                         var role = roleList.get(roleID);
                         if (role == null)
-                            return new CommandsAPI.CommandResult("Something that would never happen just happened.");
+                            return new CommandsAPI.CommandResult("Something that would never happen just happened.", null, false);
                         var perms = role.h();
                         if (PermissionUtils.can(Permission.BAN_MEMBERS, perms) && PermissionUtils.can(Permission.KICK_MEMBERS, perms)) {
                             Utils.openPageWithProxy(ctx.getContext(), new ModPage(Objects.requireNonNull(StoreStream.getGuilds().getMembers().get(ctx.getCurrentChannel().getGuildId())), ctx.getCurrentChannel().getGuildId(), query.toLowerCase()));
                             return new CommandsAPI.CommandResult();
                         }
-                        return new CommandsAPI.CommandResult("You do not have the required permissions.", null, true);
                     }
-                    return new CommandsAPI.CommandResult();
+                    return new CommandsAPI.CommandResult("You do not have the required permissions.", null, false);
                 }
         );
     }
