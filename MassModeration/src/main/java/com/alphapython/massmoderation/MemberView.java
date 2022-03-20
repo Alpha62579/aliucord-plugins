@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -28,7 +27,7 @@ public class MemberView extends LinearLayout {
     public ImageButton ban;
     public ImageButton remove;
 
-    public MemberView(Context context, User user, long guildID, ModPage settingPage, View modView) {
+    public MemberView(Context context, User user, long guildID, ModPage settingPage) {
         super(context);
         setId((int) user.getId());
         setOrientation(HORIZONTAL);
@@ -61,7 +60,9 @@ public class MemberView extends LinearLayout {
         kick = new ImageButton(context);
         kick.setImageDrawable(drawable);
         kick.setBackground(null);
-        kick.setOnClickListener(event -> ModPage.kickUser(user, guildID));
+        kick.setOnClickListener(event -> {
+            if (ModPage.kickUser(user, guildID)) settingPage.removeAndUpdateList(user);
+        });
 
         // Ban button
         drawable = ContextCompat.getDrawable(context, R.e.ic_ban_red_24dp);
@@ -69,7 +70,9 @@ public class MemberView extends LinearLayout {
         ban = new ImageButton(context);
         ban.setImageDrawable(drawable);
         ban.setBackground(null);
-        ban.setOnClickListener(event -> ModPage.banUser(user, guildID));
+        ban.setOnClickListener(event -> {
+            if (ModPage.banUser(user, guildID)) settingPage.removeAndUpdateList(user);
+        });
 
         // Remove from list button
         drawable = ContextCompat.getDrawable(context, R.e.ic_x_red_24dp);
@@ -77,15 +80,7 @@ public class MemberView extends LinearLayout {
         remove = new ImageButton(context);
         remove.setImageDrawable(drawable);
         remove.setBackground(null);
-        remove.setOnClickListener(event -> {
-            settingPage.memberList.remove(user);
-            settingPage.removeView(modView.findViewById((int) user.getId()));
-            ((TextView) modView.findViewWithTag("MemberCount")).setText(String.format("%d member(s)", settingPage.memberList.size()));
-            if (settingPage.memberList.size() == 0) {
-                settingPage.removeHeaderButton(settingPage.kickHeader);
-                settingPage.removeHeaderButton(settingPage.banHeader);
-            }
-        });
+        remove.setOnClickListener(event -> settingPage.removeAndUpdateList(user));
 
         // Add views.
         actions.addView(kick);
