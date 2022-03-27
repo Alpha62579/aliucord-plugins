@@ -1,4 +1,4 @@
-version = "1.2.2"
+version = "1.2.3"
 description = "This is a plugin to softban scammers.\nNote: This plugin is only intended for use with AOUutils and the All Of Us discord server."
 
 aliucord.changelog.set(
@@ -21,5 +21,7 @@ aliucord.changelog.set(
         * Bug fix: Fixes due to new Discord update.
         # 1.2.2
         * Updated the invite URL.
+        # 1.2.3
+        * Fixed AdminMenu patch.
         """.trimIndent()
 )

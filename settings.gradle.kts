@@ -14,4 +14,6 @@ include(":Enchanter")
 
 include(":MassModeration")
 
+include(":NoCrossposts")
+
 rootProject.name = "AliucordPlugins"

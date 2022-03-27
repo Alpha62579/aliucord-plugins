@@ -21,7 +21,6 @@ import com.aliucord.api.SettingsAPI;
 import com.aliucord.entities.Plugin;
 import com.aliucord.fragments.ConfirmDialog;
 import com.aliucord.patcher.Hook;
-import com.aliucord.patcher.PreHook;
 import com.aliucord.utils.RxUtils;
 import com.discord.api.commands.ApplicationCommandType;
 import com.discord.api.permission.Permission;
@@ -128,6 +127,7 @@ public class AOUutilsHelper extends Plugin {
                                         Collections.emptyList(),
                                         false
                                 ),
+                                null,
                                 null
                         );
                         var observable = RestAPI.api.sendMessage(Long.parseLong(pluginsettings.getString("bot_cmds", "852899427860611144")), params);
