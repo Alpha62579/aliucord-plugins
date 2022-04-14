@@ -156,8 +156,8 @@ public class GitHubStats extends Plugin {
                 rawHTML.set(
                         Http.simpleGet(
                                 String.format(
-                                        "https://github-readme-stats.vercel.app/api?username=%s&unused=%s",
-                                        username, UUID.randomUUID().toString())));
+                                        "https://github-readme-stats.vercel.app/api?username=%s%s&unused=%s",
+                                        username, (!pluginsettings.getBool("yearly", true) ? "&include_all_commits=true" : ""), UUID.randomUUID().toString())));
             } catch (Exception e) {
                 logger.error(e);
             }

@@ -22,7 +22,7 @@ public class Settings extends BottomSheet {
         var ctx = requireContext();
         addCheckedSetting(ctx, "Show total stars earned", null, "stars");
         addCheckedSetting(ctx, "Show commits", null, "commits");
-        addCheckedSetting(ctx, "Show only this year's commits", null, "yearly");
+        // addCheckedSetting(ctx, "Show only this year's commits", null, "yearly");
         addCheckedSetting(ctx, "Show total PRs", null, "prs");
         addCheckedSetting(ctx, "Show total issues", null, "issues");
         addCheckedSetting(ctx, "Show total contributions", null, "contributions");
