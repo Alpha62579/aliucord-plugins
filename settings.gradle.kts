@@ -16,4 +16,6 @@ include(":MassModeration")
 
 include(":NoCrossposts")
 
+include(":GitHubStats")
+
 rootProject.name = "AliucordPlugins"

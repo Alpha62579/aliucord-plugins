@@ -36,7 +36,7 @@ public class GitHubStats extends Plugin {
     public static int viewID = View.generateViewId();
 
     public GitHubStats() {
-        settingsTab = new SettingsTab(Settings.class, SettingsTab.Type.BOTTOM_SHEET);
+        settingsTab = new SettingsTab(Settings.class, SettingsTab.Type.BOTTOM_SHEET).withArgs(settings);
     }
 
     @SuppressLint("SetTextI18n")
