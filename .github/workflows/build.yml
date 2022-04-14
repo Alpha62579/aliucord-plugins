@@ -11,6 +11,8 @@ on:
       - main
     paths-ignore:
       - '*.md'
+      - '*/*.md'
+      - '.github/workflows' # Just to be safe, idk how this thing works anyway
 
 jobs:
   build:
