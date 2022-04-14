@@ -2,6 +2,7 @@ package com.alphapython.githubstats;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.NetworkOnMainThreadException;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -54,10 +55,10 @@ public class GitHubStats extends Plugin {
         }));
 
         patcher.patch(WidgetUserSheet.class.getDeclaredMethod("configureGuildSection", WidgetUserSheetViewModel.ViewState.Loaded.class), new Hook(methodHookParam -> {
-            var _this = (WidgetUserSheet) methodHookParam.thisObject;
             if (statHolder.get() == null) return;
             var stats = statHolder.get();
             statHolder.set(null);
+            var _this = (WidgetUserSheet) methodHookParam.thisObject;
             try {
                 // Get binding and the user sheet
                 WidgetUserSheetBinding binding = (WidgetUserSheetBinding) ReflectUtils.invokeMethod(WidgetUserSheet.class, _this, "getBinding");
@@ -156,8 +157,18 @@ public class GitHubStats extends Plugin {
                 logger.error(e);
             }
         });
-        thread.start();
-        while (thread.isAlive()) thread.getId();
+        try {
+            thread.start();
+            while (thread.isAlive()) thread.getId();
+        } catch (NetworkOnMainThreadException e) {
+            try {
+                thread.start(); // Retry one last time
+                while (thread.isAlive()) thread.getId();
+            } catch (NetworkOnMainThreadException a) {
+                logger.error("Error getting stats...", a);
+                // EA sports
+            }
+        }
         if (rawHTML.get() != null) {
             var matcher = dataPattern.matcher(rawHTML.get());
             var matches = new ArrayList<String>();
@@ -166,6 +177,6 @@ public class GitHubStats extends Plugin {
             }
             return matches;
         }
-        return new ArrayList<>();
+        return null;
     }
 }
