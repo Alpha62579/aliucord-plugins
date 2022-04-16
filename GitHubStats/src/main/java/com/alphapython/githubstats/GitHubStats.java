@@ -99,7 +99,7 @@ public class GitHubStats extends Plugin {
 
                         if (pluginsettings.getBool("commits", true)) {
                             TextView commits = new TextView(ctx, null, 0, R.i.UiKit_TextAppearance_Semibold);
-                            commits.setText("Total Commits" + (pluginsettings.getBool("yearly", true) ? String.format("(%s)", Calendar.getInstance().get(Calendar.YEAR)) : "") + ": " + stats.get(1));
+                            commits.setText("Total Commits" + (pluginsettings.getBool("yearly", true) ? String.format(" (%s)", Calendar.getInstance().get(Calendar.YEAR)) : "") + ": " + stats.get(1));
                             commits.setLayoutParams(itemParams);
                             layout.addView(commits);
                         }
