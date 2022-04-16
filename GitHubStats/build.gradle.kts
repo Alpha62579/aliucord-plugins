@@ -1,4 +1,4 @@
-version = "1.1.1"
+version = "1.1.2"
 description = "Show a user's GitHub stats on their profile."
 
 aliucord.changelog.set(
@@ -14,5 +14,7 @@ aliucord.changelog.set(
             * Make things consistent, it usually broke due to wacky patching.
             # 1.1.1
             * Temporarily removing lifetime commits setting due to a bug in the API.
+            # 1.1.2
+            * Fix a typo. _(yes it's just ONE space)_
         """.trimIndent()
 )
