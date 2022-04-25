@@ -13,6 +13,7 @@ import com.aliucord.Utils;
 import com.aliucord.annotations.AliucordPlugin;
 import com.aliucord.api.SettingsAPI;
 import com.aliucord.entities.Plugin;
+import com.aliucord.patcher.Hook;
 import com.aliucord.patcher.PreHook;
 import com.aliucord.utils.DimenUtils;
 import com.aliucord.utils.ReflectUtils;
@@ -20,18 +21,15 @@ import com.discord.databinding.WidgetUserSheetBinding;
 import com.discord.widgets.user.profile.UserProfileConnectionsView;
 import com.discord.widgets.user.usersheet.WidgetUserSheet;
 import com.discord.widgets.user.usersheet.WidgetUserSheetViewModel;
+import com.google.gson.reflect.TypeToken;
 import com.lytefast.flexinput.R;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.UUID;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.regex.Pattern;
 
 @SuppressWarnings("unused")
 @AliucordPlugin
 public class GitHubStats extends Plugin {
-    public static final Pattern dataPattern = Pattern.compile("([0-9])+<", Pattern.CASE_INSENSITIVE);
     public static SettingsAPI pluginsettings;
     public static Logger logger = new Logger("GitHubStats");
     public static int viewID = View.generateViewId();
@@ -45,7 +43,7 @@ public class GitHubStats extends Plugin {
     public void start(Context context) throws NoSuchMethodException {
         pluginsettings = settings;
 
-        patcher.patch(WidgetUserSheet.class.getDeclaredMethod("configureConnectionsSection", WidgetUserSheetViewModel.ViewState.Loaded.class), new PreHook(methodHookParam -> {
+        patcher.patch(WidgetUserSheet.class.getDeclaredMethod("configureConnectionsSection", WidgetUserSheetViewModel.ViewState.Loaded.class), new Hook(methodHookParam -> {
             var _this = (WidgetUserSheet) methodHookParam.thisObject;
             var connectedAccountItems = ((WidgetUserSheetViewModel.ViewState.Loaded) methodHookParam.args[0]).getConnectionsViewState().getConnectedAccountItems();
             for (UserProfileConnectionsView.ConnectedAccountItem item :
@@ -91,7 +89,7 @@ public class GitHubStats extends Plugin {
                         // All the stats
                         if (pluginsettings.getBool("stars", true)) {
                             TextView stars = new TextView(ctx, null, 0, R.i.UiKit_TextAppearance_Semibold);
-                            stars.setText("Total Stars Earned: " + stats.get(0));
+                            stars.setText("Total Stars Earned: " + stats.get("directStars"));
                             stars.setLayoutParams(itemParams);
                             layout.addView(stars);
                         }
@@ -99,33 +97,33 @@ public class GitHubStats extends Plugin {
 
                         if (pluginsettings.getBool("commits", true)) {
                             TextView commits = new TextView(ctx, null, 0, R.i.UiKit_TextAppearance_Semibold);
-                            commits.setText("Total Commits" + (pluginsettings.getBool("yearly", true) ? String.format(" (%s)", Calendar.getInstance().get(Calendar.YEAR)) : "") + ": " + stats.get(1));
+                            commits.setText("Total Commits: " + stats.get("commits"));
                             commits.setLayoutParams(itemParams);
                             layout.addView(commits);
                         }
 
                         if (pluginsettings.getBool("prs", true)) {
                             TextView prs = new TextView(ctx, null, 0, R.i.UiKit_TextAppearance_Semibold);
-                            prs.setText("Total PRs: " + stats.get(2));
+                            prs.setText("Total PRs: " + stats.get("pullRequests"));
                             prs.setLayoutParams(itemParams);
                             layout.addView(prs);
                         }
 
                         if (pluginsettings.getBool("issues", true)) {
                             TextView issues = new TextView(ctx, null, 0, R.i.UiKit_TextAppearance_Semibold);
-                            issues.setText("Total Issues: " + stats.get(3));
+                            issues.setText("Total Issues: " + stats.get("issues"));
                             issues.setLayoutParams(itemParams);
                             layout.addView(issues);
                         }
 
                         if (pluginsettings.getBool("contributions", true)) {
                             TextView contributions = new TextView(ctx, null, 0, R.i.UiKit_TextAppearance_Semibold);
-                            contributions.setText("Contributed to: " + stats.get(4));
+                            contributions.setText("Contributed to: " + stats.get("contributedToNotOwnerRepositories"));
                             contributions.setLayoutParams(itemParams);
                             layout.addView(contributions);
                         }
 
-                        // Add view if any one setting is trues
+                        // Add view if any one setting is true
                         for (String key :
                                 pluginsettings.getAllKeys()) {
                             if (pluginsettings.getBool(key, true)) {
@@ -148,16 +146,14 @@ public class GitHubStats extends Plugin {
         patcher.unpatchAll();
     }
 
-    public ArrayList<String> getStats(String username) {
-        // Get data and parse
-        AtomicReference<String> rawHTML = new AtomicReference<>();
+    public Map<String, String> getStats(String username) {
+        AtomicReference<Map<String, String>> data = new AtomicReference<>();
         var thread = new Thread(() -> {
             try {
-                rawHTML.set(
-                        Http.simpleGet(
-                                String.format(
-                                        "https://github-readme-stats.vercel.app/api?username=%s%s&unused=%s",
-                                        username, (!pluginsettings.getBool("yearly", true) ? "&include_all_commits=true" : ""), UUID.randomUUID().toString())));
+                data.set(Http.simpleJsonGet(
+                        String.format("https://awesome-github-stats.azurewebsites.net/user-stats/%s/stats", username),
+                        TypeToken.getParameterized(Map.class, String.class, String.class).getType()
+                ));
             } catch (Exception e) {
                 logger.error(e);
             }
@@ -174,14 +170,6 @@ public class GitHubStats extends Plugin {
                 // EA sports
             }
         }
-        if (rawHTML.get() != null) {
-            var matcher = dataPattern.matcher(rawHTML.get());
-            var matches = new ArrayList<String>();
-            while (matcher.find()) {
-                matches.add(matcher.group().replace("<", ""));
-            }
-            return matches;
-        }
-        return null;
+        return data.get();
     }
 }

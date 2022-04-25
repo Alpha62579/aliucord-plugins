@@ -1,4 +1,4 @@
-version = "1.1.2"
+version = "1.1.3"
 description = "Show a user's GitHub stats on their profile."
 
 aliucord.changelog.set(
@@ -16,5 +16,8 @@ aliucord.changelog.set(
             * Temporarily removing lifetime commits setting due to a bug in the API.
             # 1.1.2
             * Fix a typo. _(yes it's just ONE space)_
+            # 1.1.3
+            * Changed the API used.
+            * Yeeted per year commits in favor of all-time commits ~~(for the flex)~~
         """.trimIndent()
 )
