@@ -36,12 +36,12 @@ public class Yodafier extends Plugin {
     }
 
     private String yodaify(String toYoda) {
-        AtomicReference<Map<String, String>> data = new AtomicReference<>();
+        AtomicReference<Object> data = new AtomicReference<>();
         var thread = new Thread(() -> {
             try {
                 data.set(Http.simpleJsonGet(
                         String.format("https://eu-gb.functions.appdomain.cloud/api/v1/web/744fbaa5-8b07-4b92-b30d-8b6b22960a0a/default/Yodafier.json?text=%s", URLEncoder.encode(toYoda, "UTF-8")),
-                        TypeToken.getParameterized(Map.class, String.class, String.class).getType()
+                        TypeToken.getParameterized(Object.class).getType()
                 ));
             } catch (Exception e) {
                 logger.error(e);
