@@ -15,12 +15,10 @@ import com.discord.api.commands.ApplicationCommandType;
 import com.discord.widgets.chat.MessageContent;
 import com.discord.widgets.chat.MessageManager;
 import com.discord.widgets.chat.input.ChatInputViewModel;
-import com.google.gson.reflect.TypeToken;
 
 import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import kotlin.jvm.functions.Function1;

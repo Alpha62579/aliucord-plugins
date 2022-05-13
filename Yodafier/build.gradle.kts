@@ -1,4 +1,4 @@
-version = "1.0.3"
+version = "1.0.4"
 description = "Convert messages to Yoda speak."
 
 aliucord.changelog.set(
@@ -9,5 +9,9 @@ aliucord.changelog.set(
             * Bug fix: I still haven't figured out how to build on Linux. So here we go.
             # 1.0.3
             * Will THIS atleast work?!
+            # 1.0.4
+            * It finally works now!
+            * Optimize imports.
+            * Try hard not to use this too much, there's resource limits to the API.
         """.trimIndent()
 )

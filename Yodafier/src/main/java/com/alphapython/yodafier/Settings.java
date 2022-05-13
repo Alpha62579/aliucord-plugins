@@ -20,7 +20,7 @@ public class Settings extends BottomSheet {
     public void onViewCreated(View view, Bundle bundle) {
         super.onViewCreated(view, bundle);
         var ctx = requireContext();
-        addCheckedSetting(ctx, "Reverse text", "Toggle this setting to convert all the messages that is sent to Yoda speak.", "yodafier");
+        addCheckedSetting(ctx, "Yodaify text", "Toggle this setting to convert all the messages that is sent to Yoda speak.", "yodafier");
     }
 
     private void addCheckedSetting(Context ctx, String title, String subtitle, String setting) {
