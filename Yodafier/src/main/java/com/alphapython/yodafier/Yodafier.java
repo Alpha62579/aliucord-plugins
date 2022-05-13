@@ -54,7 +54,7 @@ public class Yodafier extends Plugin {
             return "";
         }
         logger.info(String.valueOf(data.get()));
-        return data.get().get("result");
+        return "";
     }
 
     private void registerCommands() {
