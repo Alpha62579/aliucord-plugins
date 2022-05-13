@@ -53,6 +53,7 @@ public class Yodafier extends Plugin {
         } catch (NetworkOnMainThreadException e) {
             return "";
         }
+        logger.info(String.valueOf(data.get()));
         return data.get().get("result");
     }
 
