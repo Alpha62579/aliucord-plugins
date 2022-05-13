@@ -1,4 +1,4 @@
-version = "1.0.3"
+version = "1.0.4"
 description = "Reverses the message that is sent."
 
 aliucord.changelog.set(
@@ -11,5 +11,7 @@ aliucord.changelog.set(
             * Bug fix: Set pluginSettings to be an instance of Settings
             # 1.0.3
             * Bug fix: Cast the right argument to MessageContent
+            # 1.0.4
+            * Fix doc.
         """.trimIndent()
 )

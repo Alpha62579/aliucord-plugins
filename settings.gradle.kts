@@ -18,4 +18,6 @@ include(":NoCrossposts")
 
 include(":GitHubStats")
 
+include(":Yodafier")
+
 rootProject.name = "AliucordPlugins"
