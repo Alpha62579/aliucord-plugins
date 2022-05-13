@@ -36,12 +36,12 @@ public class Yodafier extends Plugin {
     }
 
     private String yodaify(String toYoda) {
-        AtomicReference<Object> data = new AtomicReference<>();
+        AtomicReference<Data> data = new AtomicReference<>();
         var thread = new Thread(() -> {
             try {
                 data.set(Http.simpleJsonGet(
                         String.format("https://eu-gb.functions.appdomain.cloud/api/v1/web/744fbaa5-8b07-4b92-b30d-8b6b22960a0a/default/Yodafier.json?text=%s", URLEncoder.encode(toYoda, "UTF-8")),
-                        TypeToken.getParameterized(Object.class).getType()
+                        Data.class
                 ));
             } catch (Exception e) {
                 logger.error(e);
@@ -54,7 +54,7 @@ public class Yodafier extends Plugin {
             return "";
         }
         logger.info(String.valueOf(data.get()));
-        return "";
+        return data.get().result;
     }
 
     private void registerCommands() {
@@ -125,4 +125,9 @@ public class Yodafier extends Plugin {
         commands.unregisterAll();
         patcher.unpatchAll();
     }
+}
+
+class Data {
+    public Object headers;
+    public String result;
 }
