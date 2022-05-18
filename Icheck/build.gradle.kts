@@ -1,9 +1,7 @@
 
-version = "1.3.1"
-
-
-
-description = "Checks if the message starts with I or whatever the channel and avert the crisis if it does not start with that letter."
+version = "1.3.2"
+description =
+        "Checks if the message starts with I or whatever the channel and avert the crisis if it does not start with that letter."
 
 aliucord.changelog.set(
         """
@@ -28,5 +26,7 @@ aliucord.changelog.set(
             * Added support for "r" channel.
             # 1.3.1
             * Testing a fix for messages that start with markdown syntax.
+            # 1.3.2
+            * The plugin should now watch out for valid markdown.
         """.trimIndent()
 )

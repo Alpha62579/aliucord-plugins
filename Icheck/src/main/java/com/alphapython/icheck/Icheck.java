@@ -86,11 +86,11 @@ public class Icheck extends Plugin {
                     var content = (String) textField.get(messageContent);
                     if (content == null) return;
                     if (!content.toLowerCase()
-                            .replaceAll("/([\\*]+)(\\S)(.*?\\S)??\\1/g", "$2$3")
-                            .replaceAll("/(^|\\W)([_]+)(\\S)(.*?\\S)??\\2($|\\W)/g", "$1$3$4$5")
-                            .replaceAll("/(`{3,})(.*?)\\1/gm", "$2")
-                            .replaceAll("/`(.+?)`/g", "$1")
-                            .replaceAll("/~(.*?)~/g", "$1")
+                            .replaceAll("([\\*]+)(\\S)(.*?\\S)??\\1", "$2$3")
+                            .replaceAll("(^|\\W)([_]+)(\\S)(.*?\\S)??\\2($|\\W)", "$1$3$4$5")
+                            .replaceAll("(`{3,})(.*?)\\1", "$2")
+                            .replaceAll("`(.+?)`", "$1")
+                            .replaceAll("~~(.*?)~~", "$1")
                             .startsWith(channel)) {
                         textField.set(messageContent, text.get(channel).get(1) + content);
                     }
