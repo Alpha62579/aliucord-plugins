@@ -1,5 +1,5 @@
 
-version = "1.3.0"
+version = "1.3.1"
 
 
 
@@ -26,6 +26,7 @@ aliucord.changelog.set(
             * I forgot to apply the fix from v1.1.2
             # 1.3.0
             * Added support for "r" channel.
-
+            # 1.3.1
+            * Testing a fix for messages that start with markdown syntax.
         """.trimIndent()
 )

@@ -44,11 +44,11 @@ public class Icheck extends Plugin {
             add("935759398310129684");
             add("electro pog, anyways ");
         }});
-       put("s", new ArrayList<>() {{
+        put("s", new ArrayList<>() {{
             add("938515745325850674");
             add("sucks to me be because i forgot the 's', anyways ");
         }});
-       put("r", new ArrayList<>() {{
+        put("r", new ArrayList<>() {{
             add("942503083886411827");
             add("r/therewasanattempttosendamessagethatdidnotstartwithr, anyways ");
         }});
@@ -85,7 +85,13 @@ public class Icheck extends Plugin {
                 try {
                     var content = (String) textField.get(messageContent);
                     if (content == null) return;
-                    if (!content.toLowerCase().startsWith(channel)) {
+                    if (!content.toLowerCase()
+                            .replaceAll("/([\\*]+)(\\S)(.*?\\S)??\\1/g", "$2$3")
+                            .replaceAll("/(^|\\W)([_]+)(\\S)(.*?\\S)??\\2($|\\W)/g", "$1$3$4$5")
+                            .replaceAll("/(`{3,})(.*?)\\1/gm", "$2")
+                            .replaceAll("/`(.+?)`/g", "$1")
+                            .replaceAll("/~(.*?)~/g", "$1")
+                            .startsWith(channel)) {
                         textField.set(messageContent, text.get(channel).get(1) + content);
                     }
                 } catch (IllegalAccessException e) {
